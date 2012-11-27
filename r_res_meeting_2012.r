@@ -17,7 +17,7 @@ k.yellow.back <- "#ffffcc"
 
 ### RStan
 library(rstan)
-schools_dat <- list(J = 8, 
+schools_dat <- list(J = 8,
                     y = c(28,  8, -3,  7, -1,  1, 18, 12),
                     sigma = c(15, 10, 16, 11,  9, 11, 10, 18))
 fit1 <- stan(file='8schools.stan', data=schools_dat,
@@ -60,8 +60,8 @@ system.time({
                             shape.theta=0.1, rate.theta=0.1,
                             n.sample=8000)
 })
-#   user  system elapsed 
-#115.857   0.145 115.993 
+#   user  system elapsed
+#115.857   0.145 115.993
 burn <- 1:4000
 sigma.dlm <- sqrt(matrix(unlist(nile.dlm[c("dV", "dW")]),
                          ncol=2)[-burn,])
@@ -83,8 +83,8 @@ system.time({
                       nile.params.jags, model.file="nile.jags",
                       n.iter=8000, n.burnin=4000, n.chains=4)
 })
-#   user  system elapsed 
-#  8.595   0.263  11.647 
+#   user  system elapsed
+#  8.595   0.263  11.647
 sigma.mcmc.jags <-
     as.mcmc(lapply(1:4, function(i) as.mcmc(nile.jags)[[i]][,c(5,4)]))
 plot(sigma.mcmc.jags)
@@ -96,8 +96,8 @@ system.time({
     nile.stan <- stan(file="nile.stan", data=nile.data.stan,
                       iter=8000)
 })
-#   user  system elapsed 
-# 24.355   0.449  24.944 
+#   user  system elapsed
+# 24.355   0.449  24.944
 system.time({
     nile.stan <- stan(fit=nile.stan, data=nile.data.stan,
                       iter=8000)
@@ -212,19 +212,9 @@ abline(v = Nile[2], h=Nile[3], lty=2)
 points(nile.jags.coef$theta2, nile.jags.coef$theta3, cex=.1, col="red")
 par(mai=c(1.02, 0.82, 0.82, 0.42))
 
+
+
 ### Inverse Gaussian
 y <- rinvGauss(100, nu=5, lambda=50)
 inv.gauss.data <- list(N = 100, y = y)
 inv.gauss.stan <- stan(file="inv_gauss.stan", data=inv.gauss.data)
-
-ozone.inv.data <- list(N = nrow(environmental),
-                       ozone = environmental$ozone,
-                       max_y = max(environmental$ozone))
-ozone.inv.stan <- stan(file="ozone_inv.stan", data=ozone.inv.data)
-
-ozone.data <- list(N = nrow(environmental),
-                   ozone = environmental$ozone,
-                   radiation = environmental$radiation,
-                   temperature = environmental$temperature,
-                   wind = environmental$wind)
-ozone.stan <- stan(file="ozone.stan", data=ozone.data)
