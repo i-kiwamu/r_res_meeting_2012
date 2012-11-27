@@ -212,8 +212,19 @@ abline(v = Nile[2], h=Nile[3], lty=2)
 points(nile.jags.coef$theta2, nile.jags.coef$theta3, cex=.1, col="red")
 par(mai=c(1.02, 0.82, 0.82, 0.42))
 
-
 ### Inverse Gaussian
 y <- rinvGauss(100, nu=5, lambda=50)
 inv.gauss.data <- list(N = 100, y = y)
 inv.gauss.stan <- stan(file="inv_gauss.stan", data=inv.gauss.data)
+
+ozone.inv.data <- list(N = nrow(environmental),
+                       ozone = environmental$ozone,
+                       max_y = max(environmental$ozone))
+ozone.inv.stan <- stan(file="ozone_inv.stan", data=ozone.inv.data)
+
+ozone.data <- list(N = nrow(environmental),
+                   ozone = environmental$ozone,
+                   radiation = environmental$radiation,
+                   temperature = environmental$temperature,
+                   wind = environmental$wind)
+ozone.stan <- stan(file="ozone.stan", data=ozone.data)
