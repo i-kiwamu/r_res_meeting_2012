@@ -1,0 +1,15 @@
+model{
+    for(i in 2:N){
+        Nile[i] ~ dnorm(F * theta[i], tau.y)
+        theta[i] ~ dnorm(G * theta[i-1], tau.theta)
+    }
+    Nile[1] ~ dnorm(F * theta[1], tau.y)
+    theta[1] ~ dnorm(nile.1, tau.theta)
+    F ~ dnorm(0, .0001)
+    G ~ dnorm(0, .0001)
+    theta.zero ~ dnorm(0, .0001)
+    tau.y <- pow(sigma.y, -2)
+    tau.theta <- pow(sigma.theta, -2)
+    sigma.y ~ dunif(0, 1000)
+    sigma.theta ~ dunif(0, 1000)
+}

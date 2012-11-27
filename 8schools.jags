@@ -1,0 +1,11 @@
+model {
+    for(j in 1:J){
+        y[j] ~ dnorm(theta[j], tau.y[j])
+        theta[j] <- mu + tau * eta[j]
+        eta[j] ~ dnorm(0, 1)
+        tau.y[j] <- pow(sigma[j], -2)
+        sigma[j] ~ dunif(0, 1E+06)
+    }
+    mu ~ dnorm(0, 1E-06)
+    tau ~ dunif(0, 1E+06)
+}
